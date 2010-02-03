@@ -1,0 +1,150 @@
+% automatic manuscript creation for frmaTools
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+%\VignetteIndexEntry{frmaTools: Create packages containing the vectors used by frma.}
+%\VignetteDepends{frmaTools, frma, affyPLM, hgu133aprobe, hgu133atagprobe, hgu133atagcdf, hgu133plus2probe, hgu133afrmavecs, frmaExampleData}
+%\VignettePackage{frmaTools}
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage[authoryear, round]{natbib}
+
+\textwidth=6.2in
+\textheight=8.5in
+\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand\Rpackage[1]{{\textsf{#1}\index{#1 (package)}}}
+\newcommand\dataset[1]{{\textit{#1}\index{#1 (data set)}}}
+\newcommand\Rclass[1]{{\textit{#1}\index{#1 (class)}}}
+\newcommand\Rfunction[1]{{{\small\texttt{#1}}\index{#1 (function)}}}
+\newcommand\Rfunarg[1]{{\small\texttt{#1}}}
+\newcommand\Robject[1]{{\small\texttt{#1}}}
+
+\author{Matthew N. McCall}
+
+\begin{document}
+\title{Tools for Advanced Use of the frma Package (frmaTools)}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+Frozen RMA (fRMA) is a microarray preprocessing algorithm that allows
+one to analyze microarrays individually or in small batches and then
+combine the data for analysis. This is accomplished by utilizing
+information from the large publicly available microarray databases. In
+particular, estimates of probe-specific effects and variances are
+precomputed and frozen. Then, with new data sets, these are used in
+concert with information from the new array(s) to normalize and
+summarize the data. 
+
+This document describes \Rpackage{frmaTools}, which provides a few
+advanced usage options above and beyond the basic frma
+functionality. Details of the ideas implemented in the frma and
+frmaTools packages can be found in: \emph{Matthew N. McCall, Benjamin
+M. Bolstad, and Rafael A. Irizarry, ``FROZEN ROBUST MULTI-ARRAY
+ANALYSIS (fRMA)'' (May 2009). Johns Hopkins University, Dept. of
+Biostatistics Working Papers. Working Paper 189.} Ideally someone
+interested in using this package would first read that paper and then
+proceed to the sections below.
+
+\section{Creation of Vectors}
+To create the vectors required by the package \Rpackage{frma}, one
+needs a large database of biologically diverse samples from a variety
+of batches. For this reason, we have attempted to create and supply a
+number of these collections of vectors through packages available on
+the Bioconductor website. 
+
+To create custom vectors of one's own, follow these steps:
+\begin{enumerate}
+\item Download and install frmaTools
+\item Create a directory and move all the relevant
+{\it CEL} files to that directory.
+\item If using linux/unix, start R in that directory.
+\item If using the Rgui for 
+Microsoft Windows make sure your working directory contains the {\it
+CEL} files (use ``File -> Change Dir'' menu item).
+\item Load the library.
+<<echo=T,results=hide>>=
+library(frmaTools)
+@ 
+\item Load data 
+<<echo=T,results=hide>>=
+library(frmaExampleData)
+data(list="AffyBatch133a")
+@ 
+\item Create batch ids based on your arrays, for example:
+<<echo=T,results=hide>>=
+batch.id <- rep(1:3, each=3)
+@ 
+\item Run makeVectors
+<<echo=T,results=hide>>=
+object <- makeVectors(AffyBatch133a, batch.id)
+@ 
+\end{enumerate}
+
+This will create a list with the required vectors:
+\begin{description}
+\item[normVec]{normalization reference vector}
+\item[probeVec]{probe effect vector}
+\item[probeVarWithin]{within batch probe variance}
+\item[probeVarBetween]{between batch probe variance}
+\item[probesetSD]{within probeset standard deviation}
+\end{description}
+
+\section{Platform Conversion}
+Occasionally it will be beneficial to convert microarray data from one
+platform to another. This is possible in cases where the probes on one
+platform are a subset of the probes on another platform. For example,
+hgu133a is a subset of hgu133atag; therefore, it is possible convert
+hgu133atag data to hgu133a data by discarding those probes that are
+present on hgu133atag but not hgu133a. 
+
+Steps to convert an AffyBatch object:
+\begin{enumerate}
+\item Download and install frmaTools
+\item Load the library.
+<<echo=T,results=hide>>=
+library(frmaTools)
+@ 
+\item Load the AffyBatch object to convert (for example hgu133atag data)
+<<echo=T,results=hide>>=
+library(frmaExampleData)
+data(list="AffyBatch133atag")
+@ 
+\item Run convertPlatform (for example convert to hgu133a)
+<<echo=T,results=hide>>=
+object <- convertPlatform(AffyBatch133atag, "hgu133a")
+@ 
+\end{enumerate}
+
+\section{HGU133plus2 as HGU133a}
+It is often beneficial to combine data from two of the most widely
+used human GeneChip platforms -- HGU133a and HGU133plus2. However, the
+platform conversion method in the previous section does not work in
+this case because there are a few HGU133a probes that are not on
+HGU133plus2. Given the demand for this capability, I have created a
+function specifically designed to preprocess HGU133plus2 data so that
+it can be compared to preprocessed HGU133a data.
+
+Steps to preprocess HGU133plus2 as HGU133a
+\begin{enumerate}
+\item Download and install frmaTools
+\item Load the library.
+<<echo=T,results=hide>>=
+library(frmaTools)
+@ 
+\item Load the AffyBatch object to convert (for example hgu133plus2 data)
+<<echo=T,results=hide>>=
+library(frmaExampleData)
+data(list="AffyBatch133plus2")
+@ 
+\item Preprocess the data
+<<echo=T,results=hide>>=
+e <- hgu133plus2ASaFrma(AffyBatch133plus2)
+@ 
+\end{enumerate}
+
+
+\end{document}
+
