@@ -1,7 +1,7 @@
 % automatic manuscript creation for frmaTools
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{frmaTools: Create packages containing the vectors used by frma.}
-%\VignetteDepends{frmaTools, frma, affyPLM, hgu133aprobe, hgu133atagprobe, hgu133atagcdf, hgu133plus2probe, hgu133afrmavecs, frmaExampleData}
+%\VignetteDepends{frmaTools, frma, affyPLM, hgu133aprobe, hgu133atagprobe, hgu133plus2probe, hgu133acdf, hgu133atagcdf, hgu133plus2cdf, hgu133afrmavecs, frmaExampleData}
 %\VignettePackage{frmaTools}
 \documentclass[12pt]{article}
 \usepackage{hyperref}
