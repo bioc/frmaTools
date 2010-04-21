@@ -11,4 +11,4 @@ importFrom(preprocessCore, normalize.quantiles.determine.target,
 importFrom(stats, mad, median, var)
 importFrom(utils, packageDescription, data)
 
-export(makeVectors, makeVectorPackage, convertPlatform, hgu133plus2ASaFrma)
+export(makeVectors, makeVectorPackage, convertPlatform, hgu133plus2ASaFrma, hgu133a2ASaFrma)
