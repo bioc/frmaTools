@@ -31,6 +31,9 @@ makeVectors <- function(object, batch.id, verbose=TRUE){
 
   object <- fitPLM(object, background=FALSE, normalize=FALSE, output.param=list(weights=FALSE, residuals=TRUE, varcov="none", resid.SE=FALSE))
   r <- residuals(object)[[1]]
+
+  medianSE <- apply(se(object), 1, median)
+  names(medianSE) <- NULL
   
   probeVec <- unlist(coefs.probe(object))
   names(probeVec) <- NULL
@@ -45,5 +48,5 @@ makeVectors <- function(object, batch.id, verbose=TRUE){
   tmp <- split(r, rownames(r))
   psetMAD <- unlist(lapply(tmp, getPsetMAD, ncol(r), batch.id))
   
-  return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, probesetSD=psetMAD))
+  return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, probesetSD=psetMAD, medianSE=medianSE))
 }

@@ -1,6 +1,6 @@
 Package: frmaTools
-Version: 1.1.0
-Date: 2010-04-21
+Version: 1.1.1
+Date: 2010-06-03
 Title: Frozen RMA Tools
 Description: Tools for advanced use of the frma package.
 Author: Matthew N. McCall <mmccall@jhsph.ed>

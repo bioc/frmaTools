@@ -37,6 +37,7 @@
     probeVarWithin \tab within batch probe variance \cr
     probeVarBetween \tab between batch probe variance \cr
     probesetSD \tab within probeset standard deviation \cr
+    medianSE \tab median standard errors \cr
   }
 }
 \author{Matthew N. McCall}
