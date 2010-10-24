@@ -1,3 +1,4 @@
+getProbeMean <- function(x, nb){
   x <- matrix(x, ncol=nb, byrow=TRUE)
   rowMeans(x)
 }
