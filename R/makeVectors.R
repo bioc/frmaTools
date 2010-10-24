@@ -1,4 +1,3 @@
-getProbeMean <- function(x, nb){
   x <- matrix(x, ncol=nb, byrow=TRUE)
   rowMeans(x)
 }
@@ -16,37 +15,76 @@ getPsetMAD <- function(x, nc, batch.id){
 
 #####
 
-makeVectors <- function(object, batch.id, verbose=TRUE){
-  if(class(object) != "AffyBatch") stop("object must be of class AffyBatch.")
+makeVectors <- function(object, batch.id, target="core", verbose=TRUE){
+  if(!class(object) %in% c("AffyBatch", "ExonFeatureSet")) stop("object must be of class AffyBatch or ExonFeatureSet.")
 
+  if(class(object)=="ExonFeatureSet") target <- match.arg(target, c("core", "full", "extended", "probeset"))
+  
   batch.size <- table(batch.id)[1]
   if(!all(table(batch.id)==batch.size)) stop("Batches must be of the same size.")
 
+  if(verbose & class(object)=="ExonFeatureSet") message(paste("Exon summarization at ", target, " level.\n", sep=""))
+  
   if(verbose) message("Background Correcting ...\n")
-  object <- bg.correct.rma(object)
+  if(class(object)=="AffyBatch") object <- bg.correct.rma(object)
+  if(class(object)=="ExonFeatureSet") object <- backgroundCorrect(object, verbose=FALSE)
+
+  if(class(object)=="ExonFeatureSet"){
+    if(target=="probeset"){
+      featureInfo <- getFidProbeset(object)
+    }
+    if(target=="core"){
+      featureInfo <- getFidMetaProbesetCore(object)
+    }
+    if(target=="full"){
+      featureInfo <- getFidMetaProbesetFull(object)
+    }
+    if(target=="extended"){
+      featureInfo <- getFidMetaProbesetExtended(object)
+    }
+
+    pmi <- featureInfo[["fid"]]
+    pns <- as.character(featureInfo[["fsetid"]])
+    pms <- exprs(object)[pmi,, drop=FALSE]
+  }
+
+  if(class(object)=="AffyBatch"){
+    pms <- pm(object)
+    pns <- probeNames(object)
+  }
+  
   if(verbose) message("Normalizing ...\n")
-  normVec <- normalize.quantiles.determine.target(pm(object))
-  pm(object) <- normalize.quantiles.use.target(pm(object), normVec)
+  normVec <- normalize.quantiles.determine.target(pms)
+  pms <- normalize.quantiles.use.target(pms, normVec)
+  
   if(verbose) message("Summarizing ...\n")
-
-  object <- fitPLM(object, background=FALSE, normalize=FALSE, output.param=list(weights=FALSE, residuals=TRUE, varcov="none", resid.SE=FALSE))
-  r <- residuals(object)[[1]]
-
-  medianSE <- apply(se(object), 1, median)
+  pms <- log2(pms)
+  N <- 1:dim(pms)[1]
+  S <- split(N, pns)
+  fit <- lapply(1:length(S), function(i) {
+    s <- S[[i]]
+    rcModelPLM(pms[s,, drop=FALSE])
+  })
+  names(fit) <- unique(pns)
+  
+  resids <- matrix(unlist(lapply(fit, function(x) t(x$Residuals))), ncol=ncol(pms), byrow=TRUE)
+  
+  medianSE <- unlist(lapply(fit, function(x) median(x$StdErrors[(ncol(pms)+1):length(x$StdErrors)])))
   names(medianSE) <- NULL
   
-  probeVec <- unlist(coefs.probe(object))
+  probeVec <- unlist(lapply(fit, function(x) x$Estimates[(ncol(pms)+1):length(x$Estimates)]))
   names(probeVec) <- NULL
   
-  tmp <- split(t(r), batch.id)
+  tmp <- split(t(resids), batch.id)
   withinMean <- lapply(tmp, getProbeMean, batch.size)
   withinVar <- lapply(tmp, getProbeVar, batch.size)
   
   withinAvgVar <- rowMeans(matrix(unlist(withinVar), ncol=length(withinVar)))
   btwVar <- apply(matrix(unlist(withinMean), ncol=length(withinMean)), 1, var)
-
-  tmp <- split(r, rownames(r))
-  psetMAD <- unlist(lapply(tmp, getPsetMAD, ncol(r), batch.id))
+  
+  tmp <- split(resids, pns)
+  psetMAD <- unlist(lapply(tmp, getPsetMAD, ncol(resids), batch.id))
   
   return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, probesetSD=psetMAD, medianSE=medianSE))
 }
+

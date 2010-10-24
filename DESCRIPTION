@@ -1,11 +1,11 @@
 Package: frmaTools
-Version: 1.3.0
-Date: 2010-10-04
+Version: 1.3.1
+Date: 2010-10-24
 Title: Frozen RMA Tools
 Description: Tools for advanced use of the frma package.
 Author: Matthew N. McCall <mmccall@jhsph.ed>, Rafael A. Irizarry <rafa@jhu.edu>
 Maintainer: Matthew N. McCall <mmccall@jhsph.edu>
-Depends: R (>= 2.10.0), affyPLM
+Depends: R (>= 2.10.0), affyPLM, oligo
 Imports: Biobase, methods, affy, preprocessCore, stats, utils
 Suggests: frma, affyPLM, hgu133aprobe, hgu133atagprobe, hgu133plus2probe, hgu133acdf, hgu133atagcdf, hgu133plus2cdf, hgu133afrmavecs, frmaExampleData
 biocViews: Software, Microarray, Preprocessing

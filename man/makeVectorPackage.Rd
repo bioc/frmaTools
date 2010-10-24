@@ -8,13 +8,15 @@
   using the function makeVectors instead.
 }
 \usage{
-  makeVectorPackage(object, batch.id, version, maintainer, species, outdir=".", unlink=TRUE, verbose=TRUE)
-  makeVectors(object, batch.id, verbose=TRUE)
+  makeVectorPackage(object, batch.id, target, version, maintainer, species, outdir=".", unlink=TRUE, verbose=TRUE)
+  makeVectors(object, batch.id, target="core", verbose=TRUE)
 }
 \arguments{
   \item{object}{an AffyBatch object from which to create the vectors}
   \item{batch.id}{a vector of batch ids used to compute within and
     between batch variances}
+  \item{target}{summarization level for exon arrays. Must be one of:
+    probeset, core, full, extended.}
   \item{version}{the version number of the package to be created}
   \item{maintainer}{typically your name}
   \item{species}{species of samples in object}
@@ -28,9 +30,9 @@
 \value{
   The makeVectorPackage function creates a package with the name
   <array platform>frmavecs. For example is the object contains HGU133a
-  arrays, the package would be called HGU133afrmavecs.
+  arrays, the package would be called HGU133afrmavecs. 
 
-  The makeVectors function creates a list with 5 elements:
+  The makeVectors function creates a list with 6 elements:
   \tabular{ll}{
     normVec \tab normalization vector \cr
     probeVec \tab probe effect vector \cr
