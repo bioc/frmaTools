@@ -10,7 +10,7 @@ getProbeVar <- function(x, nb){
 
 getPsetMAD <- function(x, nc, batch.id){
   x <- matrix(x, ncol=nc)
-  x.tmp <- split(x, batch.id)
+  x.tmp <- split(t(x), batch.id)
   median(unlist(lapply(x.tmp, mad)))
 }
 
