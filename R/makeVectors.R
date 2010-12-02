@@ -67,6 +67,7 @@ makeVectors <- function(object, batch.id, target="core", verbose=TRUE){
     rcModelPLM(pms[s,, drop=FALSE])
   })
   names(fit) <- unique(pns)
+  gc()	
   
   resids <- matrix(unlist(lapply(fit, function(x) t(x$Residuals))), ncol=ncol(pms), byrow=TRUE)
   
@@ -79,13 +80,25 @@ makeVectors <- function(object, batch.id, target="core", verbose=TRUE){
   tmp <- split(t(resids), batch.id)
   withinMean <- lapply(tmp, getProbeMean, batch.size)
   withinVar <- lapply(tmp, getProbeVar, batch.size)
+  rm(tmp)
+  gc()
   
   withinAvgVar <- rowMeans(matrix(unlist(withinVar), ncol=length(withinVar)))
   btwVar <- apply(matrix(unlist(withinMean), ncol=length(withinMean)), 1, var)
+  rm(withinMean)
+  rm(withinVar)
+  gc()
   
   tmp <- split(resids, pns)
   psetMAD <- unlist(lapply(tmp, getPsetMAD, ncol(resids), batch.id))
+  rm(tmp)
+  gc()
   
+  rm(resids)
+  rm(pms)
+  rm(pns)
+  gc()
+
   return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, probesetSD=psetMAD, medianSE=medianSE))
 }
 
