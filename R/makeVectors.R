@@ -71,7 +71,7 @@ makeVectors <- function(object, batch.id, target="core", verbose=TRUE){
   
   resids <- matrix(unlist(lapply(fit, function(x) t(x$Residuals))), ncol=ncol(pms), byrow=TRUE)
   
-  medianSE <- unlist(lapply(fit, function(x) median(x$StdErrors[(ncol(pms)+1):length(x$StdErrors)])))
+  medianSE <- unlist(lapply(fit, function(x) median(x$StdErrors[1:ncol(pms)])))
   names(medianSE) <- NULL
   
   probeVec <- unlist(lapply(fit, function(x) x$Estimates[(ncol(pms)+1):length(x$Estimates)]))
