@@ -65,21 +65,17 @@ To create custom vectors of one's own, follow these steps:
 Microsoft Windows make sure your working directory contains the {\it
 CEL} files (use ``File -> Change Dir'' menu item).
 \item Load the library.
-<<echo=T,results=hide>>=
+<<eval=FALSE>>=
 library(frmaTools)
 @ 
-\item Load data 
-<<echo=T,results=hide>>=
-library(frmaExampleData)
-data(list="AffyBatch133a")
+\item Create a vector of CEL file names. If your directory contains only CEL files, do:
+<<eval=FALSE>>=
+files <- dir()
 @ 
-\item Create batch ids based on your arrays, for example:
-<<echo=T,results=hide>>=
-batch.id <- rep(1:3, each=3)
-@ 
-\item Run makeVectors
-<<echo=T,results=hide>>=
-object <- makeVectors(AffyBatch133a, batch.id)
+\item Create batch ids based on your arrays. There needs to be an equal number of arrays in each batch.
+\item Run makeVectorsAffyBatch
+<<eval=FALSE>>=
+vectors <- makeVectorsAffyBatch(files, batch.id)
 @ 
 \end{enumerate}
 
@@ -90,6 +86,7 @@ This will create a list with the required vectors:
 \item[probeVarWithin]{within batch probe variance}
 \item[probeVarBetween]{between batch probe variance}
 \item[probesetSD]{within probeset standard deviation}
+\item[medianSE]{median standard error of gene expression estimates}
 \end{description}
 
 \section{Platform Conversion}
