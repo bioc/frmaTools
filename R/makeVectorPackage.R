@@ -1,14 +1,18 @@
-makeVectorPackage <- function(object, batch.id, target, version, maintainer, species, outdir=".", unlink=TRUE, verbose=TRUE){
-  if(!class(object) %in% c("AffyBatch", "ExonFeatureSet")) stop("object must be of class AffyBatch or ExonFeatureSet.")
+makeVectorPackage <- function(files, batch.id, version, maintainer, species, type="AffyBatch", target=NULL, file.dir=".", output.dir=".", unlink=TRUE, verbose=TRUE){
 
-  if(class(object)=="ExonFeatureSet") target <- match.arg(target, c("core", "full", "extended", "probeset"))
+  type <- match.arg(type, c("AffyBatch", "ExonFeatureSet"))
+
+  if(type=="ExonFeatureSet"){
+    target <- match.arg(target, c("core", "full", "extended", "probeset"))
+    require(oligo)
+  }
   
-  if(class(object)=="AffyBatch"){
+  if(type=="AffyBatch"){
     cdfname <- cleancdfname(cdfName(object))
     platform <- gsub("cdf","",cdfname)
     pkgname <- paste(platform, "frmavecs", sep="")
   }
-  if(class(object)=="ExonFeatureSet"){
+  if(type=="ExonFeatureSet"){
     cdfname <- annotation(object)
     platform <- paste(cdfname, target, sep="")
     pkgname <- paste(platform, "frmavecs", sep="")
@@ -26,12 +30,13 @@ makeVectorPackage <- function(object, batch.id, target, version, maintainer, spe
 
   
   createdPkg <- createPackage(pkgname,
-                              destinationDir=outdir,
+                              destinationDir=output.dir,
                               originDir=system.file("VectorPkg-template", package="frmaTools"),
                               symbolValues=symbolValues,
                               unlink=unlink)
 
-  vecs <- makeVectors(object, batch.id, target, verbose)
+  if(type=="AffyBatch") vecs <- makeVectorsAffyBatch(files, batch.id, file.dir, verbose)
+  if(type=="ExonFeatureSet") vecs <- makeVectorsExonFeatureSet(files, batch.id, target, file.dir, verbose)
   assign(pkgname, vecs)
   save(list=eval(pkgname), file=file.path(createdPkg$pkgdir, "data", paste(pkgname, ".rda", sep="")), compress=TRUE)
 }

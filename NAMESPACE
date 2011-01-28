@@ -1,14 +1,10 @@
 importMethodsFrom(Biobase, exprs, sampleNames)
-importMethodsFrom(affy, cdfName, pm, "pm<-", pmindex, probeNames)
-importMethodsFrom(affyPLM, coefs.probe, residuals)
 importFrom(Biobase, createPackage)
-importFrom(affy, bg.correct.rma, cleancdfname, xy2indices)
-importFrom(affyPLM, fitPLM)
 importFrom(methods, new)
 importFrom(preprocessCore, normalize.quantiles.determine.target,
-           normalize.quantiles.use.target, rcModelWPLM,
+           normalize.quantiles.use.target, rcModelPLM, rcModelWPLM,
            rma.background.correct)
 importFrom(stats, mad, median, var)
 importFrom(utils, packageDescription, data)
 
-export(makeVectors, makeVectorPackage, convertPlatform, hgu133plus2ASaFrma, hgu133a2ASaFrma)
+export(makeVectorsAffyBatch, makeVectorsExonFeatureSet, makeVectorPackage, convertPlatform, hgu133plus2ASaFrma, hgu133a2ASaFrma)
