@@ -47,7 +47,7 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   rm(object)
   gc()
 
-  if(normalize="quantile"){
+  if(normalize=="quantile"){
     if(is.null(normVec)) normVec <- normalize.quantiles.determine.target(pms)
     pms <- normalize.quantiles.use.target(pms, normVec)
     if(verbose) message("Normalized \n")

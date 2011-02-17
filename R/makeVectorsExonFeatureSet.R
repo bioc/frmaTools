@@ -63,7 +63,7 @@ makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, backgrou
   rm(object)
   gc()
 
-  if(normalize="quantile"){
+  if(normalize=="quantile"){
     if(is.null(normVec)) normVec <- normalize.quantiles.determine.target(pms)
     pms <- normalize.quantiles.use.target(pms, normVec)
     if(verbose) message("Normalized \n")
