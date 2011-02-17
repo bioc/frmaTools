@@ -25,12 +25,12 @@ rwaFit2 <- function(x1, x2, x3, x4){
 
 #####
 
-makeVectorsExonFeatureSet <- function(files, batch.id, target, file.dir=".", verbose=TRUE){
+makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, file.dir=".", verbose=TRUE){
   require(oligo)
   
   wd <- getwd()
   setwd(file.dir)
-  object <- read.celfiles(filenames=files, verbose=verbose)
+  object <- read.celfiles(filenames=files, pkgname, verbose=verbose)
   setwd(wd)
   
   if(verbose) message("Data loaded \n")

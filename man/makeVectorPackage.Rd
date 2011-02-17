@@ -11,13 +11,18 @@
 \usage{
   makeVectorPackage(files, batch.id, version, maintainer, species,
 type="AffyBatch", target=NULL, file.dir=".", output.dir=".", unlink=TRUE, verbose=TRUE)
-  makeVectorsAffyBatch(files, batch.id, file.dir=".", verbose=TRUE)
-  makeVectorsExonFeatureSet(files, batch.id, target, file.dir=".", verbose=TRUE)
+  makeVectorsAffyBatch(files, batch.id, cdfname=NULL, file.dir=".", verbose=TRUE)
+  makeVectorsExonFeatureSet(files, batch.id, target, pkgname, file.dir=".", verbose=TRUE)
 }
 \arguments{
   \item{files}{the CEL file names from which to create the vectors}
   \item{batch.id}{a vector of batch ids used to compute within and
     between batch variances}
+  \item{cdfname}{used to specify the name of an alternative cdf package.
+    Passed to the ReadAffy function. If set to ‘NULL’, then the usual
+    cdf package based on Affymetrix's mappings will be used.}
+  \item{pkgname}{alternative data package to be loaded. Passed to the
+    read.celfiles function. If missing the standard package will be used.}
   \item{target}{summarization level for exon arrays. Must be one of:
     probeset, core, full, extended.}
   \item{version}{the version number of the package to be created}
@@ -53,7 +58,7 @@ type="AffyBatch", target=NULL, file.dir=".", output.dir=".", unlink=TRUE, verbos
 ## assuming the celfiledir points to a directory with 9 CEL files
 ## this takes a long time
 \dontrun{
-  vecs <- makeVectorsPackage(celfiledir, batch.id=rep(1:3, each=3), version="0.0.1", maintainer="Matthew N McCall", species="Homo_sapiens")
+  vecs <- makeVectorsAffyBatch(celfiledir, batch.id=rep(1:3, each=3))
 }
 }
 \keyword{manip}

@@ -25,10 +25,10 @@ rwaFit2 <- function(x1, x2, x3, x4){
 
 #####
 
-makeVectorsAffyBatch <- function(files, batch.id, file.dir=".", verbose=TRUE){
+makeVectorsAffyBatch <- function(files, batch.id, cdfname=NULL, file.dir=".", verbose=TRUE){
   wd <- getwd()
   setwd(file.dir)
-  object <- ReadAffy(filenames=files, verbose=verbose)
+  object <- ReadAffy(filenames=files, cdfname=cdfname, verbose=verbose)
   setwd(wd)
   
   if(verbose) message("Data loaded \n")
