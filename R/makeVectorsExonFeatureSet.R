@@ -25,7 +25,7 @@ rwaFit2 <- function(x1, x2, x3, x4){
 
 #####
 
-makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, file.dir=".", verbose=TRUE){
+makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, background="rma", normalize="quantile", normVec=NULL, file.dir=".", verbose=TRUE){
   require(oligo)
   
   wd <- getwd()
@@ -38,9 +38,11 @@ makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, file.dir
   batch.size <- table(batch.id)[1]
   if(!all(table(batch.id)==batch.size)) stop("Batches must be of the same size.")
 
-  object <- backgroundCorrect(object, verbose=FALSE)
-  if(verbose) message("Background Corrected \n")
-  gc()
+  if(background=="rma"){
+    object <- backgroundCorrect(object, verbose=FALSE)
+    if(verbose) message("Background Corrected \n")
+    gc()
+  }
 
   if(target=="probeset"){
     featureInfo <- getFidProbeset(object)
@@ -60,10 +62,12 @@ makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, file.dir
   pms <- exprs(object)[pmi,, drop=FALSE]
   rm(object)
   gc()
-  
-  normVec <- normalize.quantiles.determine.target(pms)
-  pms <- normalize.quantiles.use.target(pms, normVec)
-  if(verbose) message("Normalized \n")
+
+  if(normalize="quantile"){
+    if(is.null(normVec)) normVec <- normalize.quantiles.determine.target(pms)
+    pms <- normalize.quantiles.use.target(pms, normVec)
+    if(verbose) message("Normalized \n")
+  }
 
   pms <- log2(pms)
   gc()

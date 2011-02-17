@@ -25,7 +25,7 @@ rwaFit2 <- function(x1, x2, x3, x4){
 
 #####
 
-makeVectorsAffyBatch <- function(files, batch.id, cdfname=NULL, file.dir=".", verbose=TRUE){
+makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="quantile", normVec=NULL, cdfname=NULL, file.dir=".", verbose=TRUE){
   wd <- getwd()
   setwd(file.dir)
   object <- ReadAffy(filenames=files, cdfname=cdfname, verbose=verbose)
@@ -36,18 +36,22 @@ makeVectorsAffyBatch <- function(files, batch.id, cdfname=NULL, file.dir=".", ve
   batch.size <- table(batch.id)[1]
   if(!all(table(batch.id)==batch.size)) stop("Batches must be of the same size.")
 
-  object <- bg.correct.rma(object)
-  if(verbose) message("Background Corrected \n")
-  gc()
+  if(background=="rma"){
+    object <- bg.correct.rma(object)
+    if(verbose) message("Background Corrected \n")
+    gc()
+  }
   
   pms <- pm(object)
   pns <- probeNames(object)
   rm(object)
   gc()
-  
-  normVec <- normalize.quantiles.determine.target(pms)
-  pms <- normalize.quantiles.use.target(pms, normVec)
-  if(verbose) message("Normalized \n")
+
+  if(normalize="quantile"){
+    if(is.null(normVec)) normVec <- normalize.quantiles.determine.target(pms)
+    pms <- normalize.quantiles.use.target(pms, normVec)
+    if(verbose) message("Normalized \n")
+  }
 
   pms <- log2(pms)
   gc()

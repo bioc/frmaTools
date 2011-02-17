@@ -11,13 +11,22 @@
 \usage{
   makeVectorPackage(files, batch.id, version, maintainer, species,
 type="AffyBatch", target=NULL, file.dir=".", output.dir=".", unlink=TRUE, verbose=TRUE)
-  makeVectorsAffyBatch(files, batch.id, cdfname=NULL, file.dir=".", verbose=TRUE)
-  makeVectorsExonFeatureSet(files, batch.id, target, pkgname, file.dir=".", verbose=TRUE)
+  makeVectorsAffyBatch(files, batch.id, background="rma",
+normalize="quantile", normVec=NULL, cdfname=NULL, file.dir=".", verbose=TRUE)
+  makeVectorsExonFeatureSet(files, batch.id, target, pkgname,
+background="rma", normalize="quantile", normVec=NULL, file.dir=".", verbose=TRUE)
 }
 \arguments{
   \item{files}{the CEL file names from which to create the vectors}
   \item{batch.id}{a vector of batch ids used to compute within and
     between batch variances}
+  \item{background}{type of background correction to perform: either
+    "none" or "rma".}
+  \item{normalize}{type of normalization to perform: either "none" or
+    "quantile".}
+  \item{normVec}{normalization vector. If NULL, a normalization vector
+    is created based on the given CEL files. Ignored if normalize is
+    "none".}
   \item{cdfname}{used to specify the name of an alternative cdf package.
     Passed to the ReadAffy function. If set to ‘NULL’, then the usual
     cdf package based on Affymetrix's mappings will be used.}
