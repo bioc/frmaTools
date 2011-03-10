@@ -6,5 +6,6 @@ importFrom(preprocessCore, normalize.quantiles.determine.target,
            rma.background.correct)
 importFrom(stats, mad, median, var)
 importFrom(utils, packageDescription, data)
+importMethodsFrom(DBI, dbGetQuery)
 
-export(makeVectorsAffyBatch, makeVectorsExonFeatureSet, makeVectorPackage, convertPlatform, hgu133plus2ASaFrma, hgu133a2ASaFrma)
+export(makeVectorsAffyBatch, makeVectorsExonFeatureSet, makeVectorPackage, convertPlatform)

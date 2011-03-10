@@ -41,10 +41,9 @@ summarize the data.
 This document describes \Rpackage{frmaTools}, which provides a few
 advanced usage options above and beyond the basic frma
 functionality. Details of the ideas implemented in the frma and
-frmaTools packages can be found in: \emph{Matthew N. McCall, Benjamin
-M. Bolstad, and Rafael A. Irizarry, ``FROZEN ROBUST MULTI-ARRAY
-ANALYSIS (fRMA)'' (May 2009). Johns Hopkins University, Dept. of
-Biostatistics Working Papers. Working Paper 189.} Ideally someone
+frmaTools packages can be found in: \emph{McCall, MN, Bolstad, BM, and
+  Irizarry, RA (2010). Frozen robust multiarray analysis (fRMA),
+  Biostatistics, doi: 10.1093/biostatistics/kxp059.} Ideally someone
 interested in using this package would first read that paper and then
 proceed to the sections below.
 
@@ -114,34 +113,6 @@ data(list="AffyBatch133atag")
 object <- convertPlatform(AffyBatch133atag, "hgu133a")
 @ 
 \end{enumerate}
-
-\section{HGU133plus2 as HGU133a}
-It is often beneficial to combine data from two of the most widely
-used human GeneChip platforms -- HGU133a and HGU133plus2. However, the
-platform conversion method in the previous section does not work in
-this case because there are a few HGU133a probes that are not on
-HGU133plus2. Given the demand for this capability, I have created a
-function specifically designed to preprocess HGU133plus2 data so that
-it can be compared to preprocessed HGU133a data.
-
-Steps to preprocess HGU133plus2 as HGU133a
-\begin{enumerate}
-\item Download and install frmaTools
-\item Load the library.
-<<echo=T,results=hide>>=
-library(frmaTools)
-@ 
-\item Load the AffyBatch object to convert (for example hgu133plus2 data)
-<<echo=T,results=hide>>=
-library(frmaExampleData)
-data(list="AffyBatch133plus2")
-@ 
-\item Preprocess the data
-<<echo=T,results=hide>>=
-e <- hgu133plus2ASaFrma(AffyBatch133plus2)
-@ 
-\end{enumerate}
-
 
 \end{document}
 

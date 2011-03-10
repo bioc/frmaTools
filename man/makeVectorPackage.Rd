@@ -10,6 +10,7 @@
 }
 \usage{
   makeVectorPackage(files, batch.id, version, maintainer, species,
+annotation, packageName, background="rma", normalize="quantile", normVec=NULL, 
 type="AffyBatch", target=NULL, file.dir=".", output.dir=".", unlink=TRUE, verbose=TRUE)
   makeVectorsAffyBatch(files, batch.id, background="rma",
 normalize="quantile", normVec=NULL, cdfname=NULL, file.dir=".", verbose=TRUE)
@@ -27,13 +28,18 @@ background="rma", normalize="quantile", normVec=NULL, file.dir=".", verbose=TRUE
   \item{normVec}{normalization vector. If NULL, a normalization vector
     is created based on the given CEL files. Ignored if normalize is
     "none".}
+  \item{annotation}{the "cdfname" or "pkgname" to be passed to either
+    makeVectorsAffyBatch or makeVectorsExonExpressionSet depending on
+    the value of "type".}
   \item{cdfname}{used to specify the name of an alternative cdf package.
-    Passed to the ReadAffy function. If set to ‘NULL’, then the usual
+    Passed to the ReadAffy function. If set to "NULL", then the usual
     cdf package based on Affymetrix's mappings will be used.}
   \item{pkgname}{alternative data package to be loaded. Passed to the
-    read.celfiles function. If missing the standard package will be used.}
+    read.celfiles function. If set to "NULL", then the default package
+    will be used.}
   \item{target}{summarization level for exon arrays. Must be one of:
     probeset, core, full, extended.}
+  \item{packageName}{name of the package to be created}
   \item{version}{the version number of the package to be created}
   \item{maintainer}{typically your name}
   \item{species}{species of samples in object}
