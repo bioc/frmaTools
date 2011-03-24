@@ -30,7 +30,7 @@ makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, backgrou
   
   wd <- getwd()
   setwd(file.dir)
-  object <- read.celfiles(filenames=files, pkgname, verbose=verbose)
+  object <- read.celfiles(filenames=files, pkgname=pkgname, verbose=verbose)
   setwd(wd)
   
   if(verbose) message("Data loaded \n")
