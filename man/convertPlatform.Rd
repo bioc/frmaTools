@@ -20,6 +20,10 @@
 \examples{
   library(frmaExampleData)
   data(AffyBatch133atag)
+  require(hgu133aprobe)
+  require(hgu133atagprobe)
+  require(hgu133acdf)
+  require(hgu133atagcdf)
   object <- convertPlatform(AffyBatch133atag, "hgu133a")
 }
 \keyword{manip}
