@@ -25,7 +25,7 @@ rwaFit2 <- function(x1, x2, x3, x4){
 
 #####
 
-makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, background="rma", normalize="quantile", normVec=NULL, file.dir=".", verbose=TRUE){
+makeVectorsFeatureSet <- function(files, batch.id, pkgname, background="rma", normalize="quantile", normVec=NULL, file.dir=".", verbose=TRUE){
   require(oligo)
   
   wd <- getwd()
@@ -44,18 +44,11 @@ makeVectorsExonFeatureSet <- function(files, batch.id, target, pkgname, backgrou
     gc()
   }
 
-  if(target=="probeset"){
-    featureInfo <- getFidProbeset(object)
-  }
-  if(target=="core"){
-    featureInfo <- getFidMetaProbesetCore(object)
-  }
-  if(target=="full"){
-    featureInfo <- getFidMetaProbesetFull(object)
-  }
-  if(target=="extended"){
-    featureInfo <- getFidMetaProbesetExtended(object)
-  }
+  featureInfo <- getFidProbeset(object)
+
+##  if(target=="core"){
+##    featureInfo <- getFidMetaProbesetCore(object)
+##  }
 
   pmi <- featureInfo[["fid"]]
   pns <- as.character(featureInfo[["fsetid"]])

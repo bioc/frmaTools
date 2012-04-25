@@ -8,4 +8,4 @@ importFrom(stats, mad, median, var)
 importFrom(utils, packageDescription, data)
 importMethodsFrom(DBI, dbGetQuery)
 
-export(makeVectorsAffyBatch, makeVectorsExonFeatureSet, makeVectorPackage, convertPlatform)
+export(makeVectorsAffyBatch, makeVectorsFeatureSet, makeVectorPackage, convertPlatform)
