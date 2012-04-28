@@ -10,6 +10,7 @@ convertPlatform <- function(object, new.platform){
   pns <- probeNames(tmp)
   index <- unlist(pmindex(tmp))
   mIndex <- match(index,map[,1])
+  if(any(is.na(mIndex))) stop("new.platform is not a subset of the original platform")
   pmIndex <- map[mIndex,2]
 
   require(paste(new.platform,"cdf",sep=""), character.only=TRUE)
