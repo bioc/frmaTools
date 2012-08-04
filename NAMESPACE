@@ -5,7 +5,7 @@ importFrom(preprocessCore, normalize.quantiles.determine.target,
            normalize.quantiles.use.target, rcModelPLM, rcModelWPLM,
            rma.background.correct)
 importFrom(stats, mad, median, var)
-importFrom(utils, packageDescription, data)
+importFrom(utils, packageDescription, data, citation, toBibtex)
 importMethodsFrom(DBI, dbGetQuery)
 
 export(makeVectorsAffyBatch, makeVectorsFeatureSet, makeVectorPackage, convertPlatform)

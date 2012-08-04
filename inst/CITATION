@@ -1,0 +1,12 @@
+citEntry(entry = "Article",
+         author = "Matthew N McCall and Rafael A Irizarry",
+         title = "Thawing Frozen Robust Multi-array Analysis (fRMA)",
+         journal = "BMC Bioinformatics",
+         volume = "12",
+         number = "1",
+         year = "2011",
+         pages = "369",
+         publisher = "BioMed Central Ltd",
+         textVersion = "McCall MN and Irizarry RA (2011). Thawing Frozen Robust Multi-array Analysis (fRMA), BMC Bioinformatics, 12:369.",
+	 header = "For use of the frmaTools package, please cite:"
+)
