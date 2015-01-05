@@ -44,12 +44,17 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   
   pms <- pm(object)
   pns <- probeNames(object)
+  pmi <- unlist(pmindex(object))
+
+  if(!identical(as.character(pmi),rownames(pms))) stop("Mismatch between pmindex and rownames of pms")
+
   rm(object)
   gc()
 
   if(normalize=="quantile"){
     if(is.null(normVec)) normVec <- normalize.quantiles.determine.target(pms)
     pms <- normalize.quantiles.use.target(pms, normVec)
+    names(normVec) <- as.character(pmi)
     if(verbose) message("Normalized \n")
   }
 
@@ -72,6 +77,7 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
       gc()
     }
   }
+  names(probeVec) <- as.character(pmi)
   if(verbose) message("Probe Effects Calculated \n")
   gc()
   
@@ -83,11 +89,13 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   rm(tmp)
   rm(withinMean)
   rm(withinVar)
+  names(withinAvgVar) <- names(btwVar) <- as.character(pmi)
   if(verbose) message("Probe Variances Calculated \n")
   gc()
   
   tmp <- split(resids, pns)
   psetMAD <- unlist(lapply(tmp, getPsetMAD, nc, batch.id))
+  names(psetMAD) <- names(tmp)
   rm(tmp)
   rm(resids)
   if(verbose) message("Probe Set SDs Calculated \n")
@@ -105,17 +113,17 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
       gc()
     }
   }
+  names(medianSE) <- names(psetMAD)
   if(verbose) message("Median SEs Calculated \n")
   gc()
 
-  names(psetMAD) <- names(medianSE) <- unique(pns)
-  
   rm(w)
   rm(pms)
   rm(pns)
   gc()
 
-  return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, probesetSD=psetMAD, medianSE=medianSE))
+  return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, 
+              probesetSD=psetMAD, medianSE=medianSE))
 }
 
 
