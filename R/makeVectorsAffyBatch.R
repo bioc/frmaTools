@@ -30,7 +30,7 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   setwd(file.dir)
   object <- ReadAffy(filenames=files, cdfname=cdfname, verbose=verbose)
   setwd(wd)
-  
+
   if(verbose) message("Data loaded \n")
   
   batch.size <- table(batch.id)[1]
@@ -122,8 +122,12 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   rm(pns)
   gc()
 
-  return(list(normVec=normVec, probeVec=probeVec, probeVarWithin=withinAvgVar, probeVarBetween=btwVar, 
-              probesetSD=psetMAD, medianSE=medianSE))
+  vers <- ifelse(!is.null(cdfname), packageVersion(cdfname), "")
+  
+  return(list(normVec=normVec, probeVec=probeVec,
+              probeVarWithin=withinAvgVar, probeVarBetween=btwVar, 
+              probesetSD=psetMAD, medianSE=medianSE,
+              version=vers))
 }
 
 
