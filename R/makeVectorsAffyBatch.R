@@ -122,7 +122,7 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   rm(pns)
   gc()
 
-  vers <- ifelse(!is.null(cdfname), packageVersion(cdfname), "")
+  vers <- ifelse(!is.null(cdfname), as.character(packageVersion(cdfname)), "")
   
   return(list(normVec=normVec, probeVec=probeVec,
               probeVarWithin=withinAvgVar, probeVarBetween=btwVar, 
