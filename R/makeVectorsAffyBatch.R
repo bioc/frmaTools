@@ -46,7 +46,7 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   pns <- probeNames(object)
   pmi <- unlist(pmindex(object))
 
-  if(!identical(as.character(pmi),rownames(pms))) stop("Mismatch between pmindex and rownames of pms")
+  if(!identical(sprintf("%i",pmi),rownames(pms))) stop("Mismatch between pmindex and rownames of pms")
 
   rm(object)
   gc()
@@ -122,7 +122,9 @@ makeVectorsAffyBatch <- function(files, batch.id, background="rma", normalize="q
   rm(pns)
   gc()
 
-  vers <- ifelse(!is.null(cdfname), as.character(packageVersion(cdfname)), "")
+  if(!is.null(cdfname)){
+      vers <- as.character(packageVersion(cdfname))
+  } else vers <- ""
   
   return(list(normVec=normVec, probeVec=probeVec,
               probeVarWithin=withinAvgVar, probeVarBetween=btwVar, 
